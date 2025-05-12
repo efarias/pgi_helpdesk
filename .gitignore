@@ -1,0 +1,70 @@
+# Archivos y carpetas de PyCharm
+.idea/
+*.iml
+
+# Ignorar archivos ocultos de macOS
+.DS_Store
+._*
+
+# Archivos VSCode
+.vscode
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.swp
+*.swo
+*.log
+*.pyc
+*.pyo
+
+# Entorno Virtual y dependencias
+venv/
+.env
+*.egg-info/
+dist/
+build/
+pip-log.txt
+
+# Archivos de configuración de Docker
+.env
+docker-compose.override.yml
+*.pid
+db.sqlite3
+*.db
+
+# Archivos de configuración de Odoo
+odoo.conf
+*.session
+*.data.xml
+*.local
+*.bak
+
+# Archivos de caché y logs de Odoo
+*.log
+openerp-server.log
+odoo-server.log
+odoo.log
+cache/
+*.swp
+*.swo
+*.retry
+
+# Archivos de configuración específicos de Odoo
+*.deb
+*.rpm
+*.tar.gz
+*.zip
+addons/*/static/src/*.scssc
+addons/*/static/src/*.lessc
+
+# Base de datos y backups
+dump.sql
+*.dump
+*.backup
+*.bak
+
+# Volúmenes de Docker
+volumes/
+odoo-data/
+pg_data/

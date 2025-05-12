@@ -1,0 +1,28 @@
+<odoo>
+  <template id="pgi_ticket_nav_button" inherit_id="website.layout" name="PGI Ticket Button in Navbar">
+    <xpath expr="//ul[contains(@class, 'navbar-nav')]" position="replace">
+
+        <a class="oe_unremovable btn_cta btn btn-primary mb-2" href="/new/ticket" role="button">
+          Mi cuenta
+        </a>
+        <li class="nav-item">
+        <a class="oe_unremovable btn_cta btn btn-primary mb-2" href="/new/ticket" role="button">
+          Crear Ticket
+        </a>
+    <!-- Sign In -->
+                        <t t-call="portal.placeholder_user_sign_in">
+                            <t t-set="_link_class" t-valuef="{{_additional_btn_color or 'nav-link o_nav_link_btn'}} w-100 border text-center"/>
+                        </t>
+                        <!-- User Dropdown -->
+                        <t t-call="portal.user_dropdown">
+                            <t t-set="_icon" t-value="true"/>
+                            <t t-set="_user_name" t-value="true"/>
+                            <t t-set="_user_name_class" t-valuef="me-auto small"/>
+                            <t t-set="_link_class" t-valuef="{{ _additional_btn_color or 'nav-link'}} d-flex align-items-center border-0"/>
+                            <t t-set="_icon_class" t-valuef="me-2"/>
+                            <t t-set="_item_class" t-valuef="dropdown dropup"/>
+                            <t t-set="_dropdown_menu_class" t-valuef="w-100"/>
+                        </t>
+    </xpath>
+  </template>
+</odoo>

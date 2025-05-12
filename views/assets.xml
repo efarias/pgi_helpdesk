@@ -1,0 +1,8 @@
+<odoo>
+  <template id="assets_frontend_inherit" inherit_id="web.assets_frontend">
+  <xpath expr="." position="inside">
+    <script type="module" src="/pgi_helpdesk/static/src/js/portal_ticket_filter.js"/>
+  </xpath>
+</template>
+
+</odoo>

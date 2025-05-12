@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Extensión del formulario de res.partner -->
+    <record id="view_res_partner_form_inherit_is_school" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.is.school</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Por ejemplo: insertar después del campo `category_id` -->
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_school"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Extensión de la vista lista para mostrar el campo -->
+    <record id="view_partner_list_pgi_school" model="ir.ui.view">
+        <field name="name">res.partner.list.pgi.school</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_school"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_search_pgi_school" model="ir.ui.view">
+    <field name="name">res.partner.search.pgi.school</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_res_partner_filter"/>
+    <field name="arch" type="xml">
+        <xpath expr="//filter[@name='type_company']" position="after">
+            <filter name="is_school" string="Unidades Educativas" domain="[('is_school', '=', True)]"/>
+        </xpath>
+    </field>
+</record>
+
+</odoo>

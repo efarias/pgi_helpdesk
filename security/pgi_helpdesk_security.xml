@@ -1,0 +1,6 @@
+<odoo>
+  <record id="group_helpdesk_coordinator" model="res.groups">
+    <field name="name">Coordinador de Soporte Técnico</field>
+    <field name="category_id" ref="base.module_category_services"/>
+  </record>
+</odoo>

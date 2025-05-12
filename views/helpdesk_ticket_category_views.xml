@@ -1,0 +1,68 @@
+<odoo>
+  <!-- Vista List (ex-Tree) -->
+  <record id="helpdesk_mgmt.view_helpdesk_category_tree" model="ir.ui.view">
+    <field name="name">helpdesk.ticket.category.list.pgi</field>
+    <field name="model">helpdesk.ticket.category</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="parent_id"/>
+        <field name="team_ids" widget="many2many_tags"/>
+        <field name="is_incident"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Vista Formulario -->
+  <record id="view_helpdesk_ticket_category_form_pgi" model="ir.ui.view">
+    <field name="name">helpdesk.ticket.category.form.pgi</field>
+    <field name="model">helpdesk.ticket.category</field>
+    <field name="arch" type="xml">
+      <form string="Categoría de ticket">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="parent_id"/>
+            <field name="is_incident"/>
+            <field name="team_ids" widget="many2many_tags"/>
+          </group>
+          <group string="Subcategorías">
+            <field name="child_ids">
+              <list editable="bottom">
+                <field name="name"/>
+                <field name="is_incident"/>
+                <field name="team_ids"/>
+              </list>
+            </field>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+    <!-- Vista de búsqueda CORREGIDA -->
+  <record id="view_helpdesk_ticket_category_search_pgi" model="ir.ui.view">
+    <field name="name">helpdesk.ticket.category.search.pgi</field>
+    <field name="model">helpdesk.ticket.category</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="parent_id"/>
+        <field name="team_ids"/>
+        <filter name="filter_parent_only" string="Solo categorías raíz" domain="[('parent_id','=',False)]"/>
+        <filter name="filter_incidentes" string="Incidentes" domain="[('is_incident','=',True)]"/>
+        <filter name="filter_requerimientos" string="Requerimientos" domain="[('is_incident','=',False)]"/>
+      </search>
+    </field>
+  </record>
+
+
+  <!-- Acción de ventana -->
+  <record id="action_helpdesk_ticket_category_pgi" model="ir.actions.act_window">
+    <field name="name">Categorías de Ticket</field>
+    <field name="res_model">helpdesk.ticket.category</field>
+    <field name="view_mode">list,form</field>
+    <field name="search_view_id" ref="pgi_helpdesk.view_helpdesk_ticket_category_search_pgi"/>
+  </record>
+
+</odoo>

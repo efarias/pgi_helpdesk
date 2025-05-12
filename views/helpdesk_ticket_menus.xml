@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Menú raíz -->
+    <menuitem id="menu_pgi_root"
+              name="PGI Soporte Técnico"
+              sequence="10"
+              web_icon="helpdesk_mgmt,static/description/icon.png"/>
+
+    <!-- Menús Helpdesk bajo menú raíz PGI -->
+    <menuitem id="pgi_helpdesk_dashboard_menu"
+              name="Dashboard"
+              parent="menu_pgi_root"
+              action="helpdesk_mgmt.helpdesk_ticket_dashboard_action"
+              sequence="30"/>
+
+    <menuitem id="pgi_helpdesk_ticket_menu"
+              name="Tickets"
+              parent="menu_pgi_root"
+              action="helpdesk_mgmt.helpdesk_ticket_action"
+              sequence="40"/>
+
+    <menuitem id="pgi_helpdesk_reporting_menu"
+              name="Reporting"
+              parent="menu_pgi_root"
+              groups="helpdesk_mgmt.group_helpdesk_manager"
+              sequence="50"/>
+    <menuitem id="pgi_helpdesk_reporting_analysis"
+              name="Tickets"
+              parent="pgi_helpdesk_reporting_menu"
+              action="helpdesk_mgmt.helpdesk_ticket_reporting_action"
+              sequence="5"/>
+
+    <menuitem id="pgi_helpdesk_config_main_menu"
+              name="Configuración"
+              parent="menu_pgi_root"
+              groups="helpdesk_mgmt.group_helpdesk_manager"
+              sequence="60"/>
+
+    <menuitem id="pgi_helpdesk_config_settings_menu"
+              name="Ajustes"
+              parent="pgi_helpdesk_config_main_menu"
+              action="helpdesk_mgmt.action_helpdesk_mgmt_config_settings"
+              sequence="1"/>
+    <menuitem id="pgi_helpdesk_ticket_channel_menu"
+              name="Canales"
+              parent="pgi_helpdesk_config_main_menu"
+              action="helpdesk_mgmt.helpdesk_ticket_channel_action"
+              sequence="5"/>
+    <menuitem id="pgi_helpdesk_ticket_category_menu"
+              name="Categorías"
+              parent="pgi_helpdesk_config_main_menu"
+              action="helpdesk_mgmt.helpdesk_ticket_category_action"
+              sequence="15"/>
+    <menuitem id="pgi_helpdesk_ticket_stage_menu"
+              name="Etapas"
+              parent="pgi_helpdesk_config_main_menu"
+              action="helpdesk_mgmt.helpdesk_ticket_stage_action"
+              sequence="25"/>
+    <menuitem id="pgi_helpdesk_ticket_team_menu"
+              name="Equipos"
+              parent="pgi_helpdesk_config_main_menu"
+              action="helpdesk_mgmt.helpdesk_ticket_team_action"
+              sequence="35"/>
+    <menuitem id="pgi_helpdesk_ticket_tag_menu"
+              name="Etiquetas de Ticket"
+              parent="pgi_helpdesk_config_main_menu"
+              action="helpdesk_mgmt.helpdesk_ticket_tag_action"
+              sequence="45"/>
+
+</odoo>
