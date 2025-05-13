@@ -5,20 +5,22 @@
     <menuitem id="menu_pgi_root"
               name="PGI Soporte Técnico"
               sequence="10"
-              web_icon="helpdesk_mgmt,static/description/icon.png"/>
+              web_icon="helpdesk_mgmt,static/description/icon.png"
+              action="helpdesk_mgmt.helpdesk_ticket_dashboard_action"/>
+
 
     <!-- Menús Helpdesk bajo menú raíz PGI -->
-    <menuitem id="pgi_helpdesk_dashboard_menu"
+<!--    <menuitem id="pgi_helpdesk_dashboard_menu"
               name="Dashboard"
               parent="menu_pgi_root"
               action="helpdesk_mgmt.helpdesk_ticket_dashboard_action"
-              sequence="30"/>
+              sequence="30"/> -->
 
     <menuitem id="pgi_helpdesk_ticket_menu"
               name="Tickets"
               parent="menu_pgi_root"
               action="helpdesk_mgmt.helpdesk_ticket_action"
-              sequence="40"/>
+              sequence="5"/>
 
     <menuitem id="pgi_helpdesk_reporting_menu"
               name="Reporting"
