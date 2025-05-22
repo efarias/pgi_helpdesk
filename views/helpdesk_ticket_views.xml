@@ -15,6 +15,7 @@
             type="object"
             string="Asignar Técnico"
             class="btn-primary"
+            invisible="closed != False"
             groups="helpdesk_mgmt.group_helpdesk_manager"/>
           <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"/>
         </header>
