@@ -44,7 +44,9 @@
             <field name="impact"/>
             <field name="priority_badge_html" widget="html" readonly="1"/>
             <field name="is_incident" readonly="1"/>
-            <field name="category_id"/>
+            <field name="category_parent_id"/>
+            <label for="category_id" string="Subcategoría"/>
+            <field name="category_id" nolabel="1"/>
             <field name="tag_ids" widget="many2many_tags" options="{'no_create_edit': True, 'color_field': 'color'}"/>
           </group>
 
