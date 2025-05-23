@@ -29,6 +29,8 @@ class HelpdeskTicket(models.Model):
         ('public', 'Visible en portal público'),
     ], string='Visibilidad', default='shared')
 
+    closing_notes = fields.Html('Notas de Cierre')
+
     @api.onchange('urgency', 'impact')
     def _onchange_urgency_impact(self):
         self._compute_priority_and_resolution()

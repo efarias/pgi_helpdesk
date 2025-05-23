@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_assign_technician_wizard,pgi_helpdesk.assign_technician_wizard,model_assign_technician_wizard,helpdesk_mgmt.group_helpdesk_manager,1,1,1,0
+access_close_ticket_wizard,pgi_helpdesk.access_close_ticket_wizard,model_close_ticket_wizard,,1,1,1,0
