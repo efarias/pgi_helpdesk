@@ -165,3 +165,36 @@ class HelpdeskTicket(models.Model):
                 'default_ticket_id': self.id,
             }
         }
+
+    @api.model
+    def message_new(self, msg, custom_values=None):
+        """Override message_new to set ticket name from sequence instead of email subject."""
+        if custom_values is None:
+            custom_values = {}
+
+        defaults = {
+            # Asignar nombre desde secuencia personalizada
+            "number": self._prepare_ticket_number(self.company_id),
+            "name": msg.get("subject") or self.env._("Sin Asunto"),
+            "description": msg.get("body"),
+            "partner_email": msg.get("from"),
+            "partner_id": msg.get("author_id"),
+        }
+        defaults.update(custom_values)
+
+        ticket = super().message_new(msg, custom_values=defaults)
+
+        email_list = tools.email_split(
+            (msg.get("to") or "") + "," + (msg.get("cc") or "")
+        )
+        partner_ids = [
+            p.id
+            for p in self.env["mail.thread"]._mail_find_partner_from_emails(
+                email_list, records=ticket, force_create=False
+            )
+            if p
+        ]
+        ticket.message_subscribe(partner_ids)
+
+        return ticket
+

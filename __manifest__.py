@@ -9,9 +9,10 @@ provenientes de usuarios del SLEP, con trazabilidad, historial, y categorizació
     'author': 'SLEP Chinchorro - Eduardo Farías',
     'website': 'https://slepchinchorro.cl',
     'category': 'Services/Helpdesk',
-    'depends': ['base', 'mail', 'contacts', 'helpdesk_mgmt'],
+    'depends': ['base', 'mail', 'contacts', 'helpdesk_mgmt', 'spreadsheet', 'spreadsheet_dashboard'],
     'data': [
         'security/ir.model.access.csv',
+        'data/dashboard_ticket_metrics.xml',
         'views/close_ticket_wizard_view.xml',
         'views/helpdesk_ticket_category_views.xml',
         'views/helpdesk_ticket_views.xml',

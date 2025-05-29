@@ -64,5 +64,14 @@
     </xpath>
 
   </template>
+  <template id="portal_helpdesk_ticket_page_inherit" inherit_id="helpdesk_mgmt.portal_helpdesk_ticket_page" name="Add Expected Resolution Date">
+    <xpath expr="//div[@name='portal_ticket_col_0']" position="inside">
+        <div t-if="ticket.expected_resolution_date">
+            <strong>Fecha esperada de resolución:</strong>
+            <span t-field="ticket.expected_resolution_date" t-options='{"widget": "datetime"}'/>
+        </div>
+    </xpath>
+</template>
+
 </odoo>
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data noupdate="0">
+    <!-- Grupo de dashboards -->
+    <record id="spreadsheet_dashboard_group_helpdesk" model="spreadsheet.dashboard.group">
+      <field name="name">Soporte Técnico</field>
+      <field name="sequence">10</field>
+    </record>
+
+    <!-- Dashboard de Tickets de Soporte -->
+    <record id="spreadsheet_dashboard_helpdesk_ticket" model="spreadsheet.dashboard">
+      <field name="name"> Tickets de Soporte</field>
+      <field name="dashboard_group_id" ref="pgi_helpdesk.spreadsheet_dashboard_group_helpdesk"/>
+      <field name="spreadsheet_binary_data" type="base64" file="pgi_helpdesk/data/files/helpdesk_dashboard.json"/>
+      <field name="main_data_model_ids" eval="[(4, ref('helpdesk_mgmt.model_helpdesk_ticket'))]"/>
+      <field name="is_published">True</field>
+    </record>
+  </data>
+</odoo>
