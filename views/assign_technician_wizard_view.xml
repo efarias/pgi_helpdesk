@@ -1,17 +1,17 @@
 <odoo>
-  <record id="view_assign_technician_wizard_form" model="ir.ui.view">
-    <field name="name">assign.technician.wizard.form</field>
-    <field name="model">assign.technician.wizard</field>
-    <field name="arch" type="xml">
-      <form string="Asignar Técnico">
-        <group>
-          <field name="technician_id"/>
-        </group>
-        <footer>
-          <button string="Asignar" type="object" name="action_confirm_assign" class="btn-primary"/>
-          <button string="Cancelar" special="cancel" class="btn-secondary"/>
-        </footer>
-      </form>
-    </field>
-  </record>
+    <record id="view_assign_technician_wizard_form" model="ir.ui.view">
+        <field name="name">assign.technician.wizard.form</field>
+        <field name="model">assign.technician.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Asignar Técnico">
+                <group>
+                    <field name="technician_id"/>
+                </group>
+                <footer>
+                    <button string="Asignar" type="object" name="action_confirm_assign" class="btn-primary"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
 </odoo>

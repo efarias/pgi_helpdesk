@@ -10,11 +10,11 @@
 
 
     <!-- Menús Helpdesk bajo menú raíz PGI -->
-<!--    <menuitem id="pgi_helpdesk_dashboard_menu"
-              name="Dashboard"
-              parent="menu_pgi_root"
-              action="helpdesk_mgmt.helpdesk_ticket_dashboard_action"
-              sequence="30"/> -->
+    <!--    <menuitem id="pgi_helpdesk_dashboard_menu"
+                  name="Dashboard"
+                  parent="menu_pgi_root"
+                  action="helpdesk_mgmt.helpdesk_ticket_dashboard_action"
+                  sequence="30"/> -->
 
     <menuitem id="pgi_helpdesk_ticket_menu"
               name="Tickets"

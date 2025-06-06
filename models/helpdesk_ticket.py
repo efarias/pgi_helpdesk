@@ -134,7 +134,6 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.is_incident = ticket.category_id.is_incident if ticket.category_id else False
 
-
     ticket_company_id = fields.Many2one(
         'res.company',
         string='Compañía relacionada',
@@ -197,4 +196,3 @@ class HelpdeskTicket(models.Model):
         ticket.message_subscribe(partner_ids)
 
         return ticket
-

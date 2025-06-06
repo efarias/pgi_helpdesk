@@ -1,171 +1,172 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <record id="view_helpdesk_ticket_form_pgi" model="ir.ui.view">
-    <field name="name">helpdesk.ticket.form.pgi</field>
-    <field name="model">helpdesk.ticket</field>
-    <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
-    <field name="arch" type="xml">
+    <record id="view_helpdesk_ticket_form_pgi" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.pgi</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+        <field name="arch" type="xml">
 
-      <!-- Header: reemplazo de botones y stage -->
-      <xpath expr="//form/header" position="replace">
-        <header>
-<!--          <field name="user_has_assign_permission" invisible="1"/>-->
-          <button name="assign_to_me" type="object" string="Asignarme" class="btn-secondary" invisible="user_id != False"/>
-          <button name="action_assign_technician"
-            type="object"
-            string="Asignar Técnico"
-            class="btn-primary"
-            invisible="closed != False"
-            groups="helpdesk_mgmt.group_helpdesk_manager"/>
-          <button name="%(action_close_ticket_wizard)d"
-            type="action"
-            string="Cerrar Ticket"
-            class="btn-primary"
-            invisible="closed != False"/>
-          <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"/>
-        </header>
-      </xpath>
+            <!-- Header: reemplazo de botones y stage -->
+            <xpath expr="//form/header" position="replace">
+                <header>
+                    <!--          <field name="user_has_assign_permission" invisible="1"/>-->
+                    <button name="assign_to_me" type="object" string="Asignarme" class="btn-secondary"
+                            invisible="user_id != False"/>
+                    <button name="action_assign_technician"
+                            type="object"
+                            string="Asignar Técnico"
+                            class="btn-primary"
+                            invisible="closed != False"
+                            groups="helpdesk_mgmt.group_helpdesk_manager"/>
+                    <button name="%(action_close_ticket_wizard)d"
+                            type="action"
+                            string="Cerrar Ticket"
+                            class="btn-primary"
+                            invisible="closed != False"/>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"/>
+                </header>
+            </xpath>
 
-      <!-- Título y nombre -->
-      <xpath expr="//div[@class='oe_title']" position="replace">
-        <div class="oe_title">
-          <h1><field name="number"/></h1>
-          <h2><field name="name"/></h2>
-        </div>
-      </xpath>
+            <!-- Título y nombre -->
+            <xpath expr="//div[@class='oe_title']" position="replace">
+                <div class="oe_title">
+                    <h1>
+                        <field name="number"/>
+                    </h1>
+                    <h2>
+                        <field name="name"/>
+                    </h2>
+                </div>
+            </xpath>
 
-      <!-- Información del solicitante -->
-      <xpath expr="//group[@name='main']" position="replace">
-        <group name="main" string="Información del Ticket">
-          <group string="Solicitante y Compañía" col="2">
-            <field name="partner_id"/>
-            <field name="partner_email"/>
-            <field name="ticket_company_id"/>
-          </group>
+            <!-- Información del solicitante -->
+            <xpath expr="//group[@name='main']" position="replace">
+                <group name="main" string="Información del Ticket">
+                    <group string="Solicitante y Compañía" col="2">
+                        <field name="partner_id"/>
+                        <field name="partner_email"/>
+                        <field name="ticket_company_id"/>
+                    </group>
 
-          <group string="Asignación y Clasificación" col="2">
-            <field name="team_id"/>
-            <field name="user_id"/>
-            <field name="urgency"/>
-            <field name="impact"/>
-            <field name="priority_badge_html" widget="html" readonly="1"/>
-            <field name="is_incident" readonly="1"/>
-            <field name="category_parent_id"/>
-            <label for="category_id" string="Subcategoría"/>
-            <field name="category_id" nolabel="1"/>
-            <field name="tag_ids" widget="many2many_tags" options="{'no_create_edit': True, 'color_field': 'color'}"/>
-          </group>
+                    <group string="Asignación y Clasificación" col="2">
+                        <field name="team_id"/>
+                        <field name="user_id"/>
+                        <field name="urgency"/>
+                        <field name="impact"/>
+                        <field name="priority_badge_html" widget="html" readonly="1"/>
+                        <field name="is_incident" readonly="1"/>
+                        <field name="category_parent_id"/>
+                        <label for="category_id" string="Subcategoría"/>
+                        <field name="category_id" nolabel="1"/>
+                        <field name="tag_ids" widget="many2many_tags"
+                               options="{'no_create_edit': True, 'color_field': 'color'}"/>
+                    </group>
 
-          <group string="Tiempos y Control" col="2">
-            <field name="expected_resolution_date" readonly="1"/>
-            <field name="create_date" readonly="1"/>
-            <field name="assigned_date" readonly="1"/>
-            <field name="closed_date" readonly="1"/>
-            <field name="last_stage_update" readonly="1"/>
-          </group>
+                    <group string="Tiempos y Control" col="2">
+                        <field name="expected_resolution_date" readonly="1"/>
+                        <field name="create_date" readonly="1"/>
+                        <field name="assigned_date" readonly="1"/>
+                        <field name="closed_date" readonly="1"/>
+                        <field name="last_stage_update" readonly="1"/>
+                    </group>
 
-          <group string="Datos Internos" col="2">
-            <field name="visibility"/>
-            <field name="channel_id"/>
-            <field name="company_id" groups="base.group_multi_company"/>
-            <field name="sequence" groups="base.group_no_one"/>
-          </group>
-        </group>
-      </xpath>
+                    <group string="Datos Internos" col="2">
+                        <field name="visibility"/>
+                        <field name="channel_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="sequence" groups="base.group_no_one"/>
+                    </group>
+                </group>
+            </xpath>
 
 
-      <!-- Otra información -->
-      <xpath expr="//page[@name='other_info']/group" position="replace">
-        <group string="Otra Información" col="2">
-          <field name="last_stage_update" readonly="1"/>
-          <field name="assigned_date" readonly="1"/>
-          <field name="closed_date" readonly="1"/>
-          <field name="create_date" readonly="1"/>
-          <field name="channel_id"/>
-          <field name="company_id" groups="base.group_multi_company"/>
-          <field name="sequence" groups="base.group_no_one"/>
-        </group>
-      </xpath>
-      <xpath expr="//notebook" position="inside">
+            <!-- Otra información -->
+            <xpath expr="//page[@name='other_info']/group" position="replace">
+                <group string="Otra Información" col="2">
+                    <field name="last_stage_update" readonly="1"/>
+                    <field name="assigned_date" readonly="1"/>
+                    <field name="closed_date" readonly="1"/>
+                    <field name="create_date" readonly="1"/>
+                    <field name="channel_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="sequence" groups="base.group_no_one"/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
                 <page string="Cierre">
                     <field name="closing_notes" widget="html" readonly="1"/>
                 </page>
             </xpath>
 
-    </field>
-  </record>
-<!--  Vista Kanban-->
-  <record id="view_helpdesk_ticket_kanban_pgi" model="ir.ui.view">
-    <field name="name">helpdesk.ticket.kanban.pgi</field>
-    <field name="model">helpdesk.ticket</field>
-    <field name="inherit_id" ref="helpdesk_mgmt.view_helpdesk_ticket_kanban"/>
-    <field name="arch" type="xml">
-      <xpath expr="//templates/t[@t-name='card']" position="replace">
-        <t t-name="card">
-          <field class="fw-bold fs-5" name="name" />
-          <field name="number" class="text-truncate" />
-          <small class="o_kanban_record_subtitle text-muted">
-            <field name="partner_id" />
-          </small>
-          <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+        </field>
+    </record>
+    <!--  Vista Kanban-->
+    <record id="view_helpdesk_ticket_kanban_pgi" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.kanban.pgi</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.view_helpdesk_ticket_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//templates/t[@t-name='card']" position="replace">
+                <t t-name="card">
+                    <field class="fw-bold fs-5" name="name"/>
+                    <field name="number" class="text-truncate"/>
+                    <small class="o_kanban_record_subtitle text-muted">
+                        <field name="partner_id"/>
+                    </small>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
 
-          <footer class="pt-1">
-            <div class="d-flex mt-auto align-items-center">
-              <div class="badge"
-                   t-att-class="'badge ' + (record.priority ? (record.priority.raw_value === '3' ? 'bg-danger' : record.priority.raw_value === '2' ? 'bg-warning' : record.priority.raw_value === '1' ? 'bg-info' : 'bg-secondary') : 'bg-secondary')">
-                <t t-if="record.priority and record.priority.raw_value === '3'">🔴 Muy Alta</t>
-                <t t-elif="record.priority and record.priority.raw_value === '2'">🟠 Alta</t>
-                <t t-elif="record.priority and record.priority.raw_value === '1'">🔵 Media</t>
-                <t t-elif="record.priority and record.priority.raw_value === '0'">⚪ Baja</t>
-                <t t-else="1">❔ Desconocida</t>
-              </div>
-              <field name="activity_ids" widget="kanban_activity"/>
-            </div>
-            <field name="kanban_state" widget="state_selection"/>
-            <field name="user_id" widget="many2one_avatar_user"
-                   domain="[('share', '=', False)]" class="ms-auto"/>
-          </footer>
-        </t>
-      </xpath>
-    </field>
-  </record>
-<!--  Vista de Búsqueda-->
-  <record id="view_helpdesk_ticket_search_pgi" model="ir.ui.view">
-    <field name="name">helpdesk.ticket.search.pgi</field>
-    <field name="model">helpdesk.ticket</field>
-    <field name="inherit_id" ref="helpdesk_mgmt.helpdesk_ticket_view_search"/>
-    <field name="arch" type="xml">
-      <xpath expr="//search" position="inside">
-        <filter string="📛 Incidentes" name="filter_incidentes" domain="[('is_incident','=',True)]"/>
-        <filter string="🛠️ Requerimientos" name="filter_requerimientos" domain="[('is_incident','=',False)]"/>
+                    <footer class="pt-1">
+                        <div class="d-flex mt-auto align-items-center">
+                            <div class="badge"
+                                 t-att-class="'badge ' + (record.priority ? (record.priority.raw_value === '3' ? 'bg-danger' : record.priority.raw_value === '2' ? 'bg-warning' : record.priority.raw_value === '1' ? 'bg-info' : 'bg-secondary') : 'bg-secondary')">
+                                <t t-if="record.priority and record.priority.raw_value === '3'">🔴 Muy Alta</t>
+                                <t t-elif="record.priority and record.priority.raw_value === '2'">🟠 Alta</t>
+                                <t t-elif="record.priority and record.priority.raw_value === '1'">🔵 Media</t>
+                                <t t-elif="record.priority and record.priority.raw_value === '0'">⚪ Baja</t>
+                                <t t-else="1">❔ Desconocida</t>
+                            </div>
+                            <field name="activity_ids" widget="kanban_activity"/>
+                        </div>
+                        <field name="kanban_state" widget="state_selection"/>
+                        <field name="user_id" widget="many2one_avatar_user"
+                               domain="[('share', '=', False)]" class="ms-auto"/>
+                    </footer>
+                </t>
+            </xpath>
+        </field>
+    </record>
+    <!--  Vista de Búsqueda-->
+    <record id="view_helpdesk_ticket_search_pgi" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search.pgi</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.helpdesk_ticket_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="📛 Incidentes" name="filter_incidentes" domain="[('is_incident','=',True)]"/>
+                <filter string="🛠️ Requerimientos" name="filter_requerimientos" domain="[('is_incident','=',False)]"/>
 
-        <separator/>
+                <separator/>
 
-        <filter string="🔴 Muy Alta prioridad" name="filter_prio_3" domain="[('priority','=','3')]"/>
-        <filter string="🟠 Alta prioridad" name="filter_prio_2" domain="[('priority','=','2')]"/>
-        <filter string="🔵 Media prioridad" name="filter_prio_1" domain="[('priority','=','1')]"/>
-        <filter string="🟢 Baja prioridad" name="filter_prio_0" domain="[('priority','=','0')]"/>
-      </xpath>
-    </field>
-  </record>
-<!--Vista de lista-->
-  <record id="view_helpdesk_ticket_tree_pgi" model="ir.ui.view">
-    <field name="name">helpdesk.ticket.tree.pgi</field>
-    <field name="model">helpdesk.ticket</field>
-    <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_tree"/>
-    <field name="arch" type="xml">
-      <xpath expr="//field[@name='priority']" position="replace">
-        <field name="priority_badge_html" widget="html" />
-      </xpath>
-      <xpath expr="//field[@name='name']" position="after">
-        <field name="is_incident" />
-      </xpath>
-    </field>
-  </record>
+                <filter string="🔴 Muy Alta prioridad" name="filter_prio_3" domain="[('priority','=','3')]"/>
+                <filter string="🟠 Alta prioridad" name="filter_prio_2" domain="[('priority','=','2')]"/>
+                <filter string="🔵 Media prioridad" name="filter_prio_1" domain="[('priority','=','1')]"/>
+                <filter string="🟢 Baja prioridad" name="filter_prio_0" domain="[('priority','=','0')]"/>
+            </xpath>
+        </field>
+    </record>
+    <!--Vista de lista-->
+    <record id="view_helpdesk_ticket_tree_pgi" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.tree.pgi</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='priority']" position="replace">
+                <field name="priority_badge_html" widget="html"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_incident"/>
+            </xpath>
+        </field>
+    </record>
 
 </odoo>
-
-
-<!--
-
--->

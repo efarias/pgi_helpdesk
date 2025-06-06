@@ -1,77 +1,78 @@
 <odoo>
-  <template id="portal_create_ticket" inherit_id="helpdesk_mgmt.portal_create_ticket" name="PGI Portal Create Ticket">
+    <template id="portal_create_ticket" inherit_id="helpdesk_mgmt.portal_create_ticket" name="PGI Portal Create Ticket">
 
-    <!-- Cargar JS personalizado -->
-    <xpath expr="//form" position="after">
-      <script type="module" src="/pgi_helpdesk/static/src/js/portal_ticket_filter.js"/>
-    </xpath>
+        <!-- Cargar JS personalizado -->
+        <xpath expr="//form" position="after">
+            <script type="module" src="/pgi_helpdesk/static/src/js/portal_ticket_filter.js"/>
+        </xpath>
 
-    <!-- Reemplazo del selector de equipo -->
-    <xpath expr="//form/div[@class='form-group'][label[@for='team']]" position="replace">
-      <div class="form-group">
-        <label class="col-md-3 col-sm-4 control-label" for="team">Equipo</label>
-        <div class="col-md-7 col-sm-8">
-          <select class="form-control" id="team" name="team" required="required">
-            <option value="">Seleccione un equipo</option>
-            <t t-foreach="teams" t-as="team">
-              <option
-                t-att-value="team.id"
-                t-att-selected="team.id == selected_team and 'selected' or None">
-                <t t-esc="team.name"/>
-              </option>
-            </t>
-          </select>
-        </div>
-      </div>
-    </xpath>
+        <!-- Reemplazo del selector de equipo -->
+        <xpath expr="//form/div[@class='form-group'][label[@for='team']]" position="replace">
+            <div class="form-group">
+                <label class="col-md-3 col-sm-4 control-label" for="team">Equipo</label>
+                <div class="col-md-7 col-sm-8">
+                    <select class="form-control" id="team" name="team" required="required">
+                        <option value="">Seleccione un equipo</option>
+                        <t t-foreach="teams" t-as="team">
+                            <option
+                                    t-att-value="team.id"
+                                    t-att-selected="team.id == selected_team and 'selected' or None">
+                                <t t-esc="team.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+            </div>
+        </xpath>
 
-    <!-- Reemplazo de categorías padre y subcategorías -->
-    <xpath expr="//form/div[@class='form-group'][label[@for='category']]" position="replace">
-      <!-- Categoría padre -->
-      <div class="form-group">
-        <label class="col-md-3 col-sm-4 control-label" for="category_parent">Categoría</label>
-        <div class="col-md-7 col-sm-8">
-          <select class="form-control" id="category_parent" name="category_parent" required="required">
-            <option value="">Seleccione una categoría</option>
-            <t t-foreach="categories" t-as="cat">
-              <option
-                t-att-value="cat.id"
-                t-att-selected="cat.id == category_parent_id and 'selected' or None">
-                <t t-esc="cat.name"/>
-              </option>
-            </t>
-          </select>
-        </div>
-      </div>
+        <!-- Reemplazo de categorías padre y subcategorías -->
+        <xpath expr="//form/div[@class='form-group'][label[@for='category']]" position="replace">
+            <!-- Categoría padre -->
+            <div class="form-group">
+                <label class="col-md-3 col-sm-4 control-label" for="category_parent">Categoría</label>
+                <div class="col-md-7 col-sm-8">
+                    <select class="form-control" id="category_parent" name="category_parent" required="required">
+                        <option value="">Seleccione una categoría</option>
+                        <t t-foreach="categories" t-as="cat">
+                            <option
+                                    t-att-value="cat.id"
+                                    t-att-selected="cat.id == category_parent_id and 'selected' or None">
+                                <t t-esc="cat.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+            </div>
 
-      <!-- Subcategoría hija -->
-      <div class="form-group">
-        <label class="col-md-3 col-sm-4 control-label" for="category">Subcategoría</label>
-        <div class="col-md-7 col-sm-8">
-          <select class="form-control" id="category" name="category" required="required">
-            <option value="">Seleccione una subcategoría</option>
-            <t t-foreach="subcategories" t-as="subcat">
-              <option
-                t-att-value="subcat.id"
-                t-att-data-parent="subcat.parent_id.id"
-                t-att-selected="subcat.id == category_id and 'selected' or None">
-                <t t-esc="subcat.name"/>
-              </option>
-            </t>
-          </select>
-        </div>
-      </div>
-    </xpath>
+            <!-- Subcategoría hija -->
+            <div class="form-group">
+                <label class="col-md-3 col-sm-4 control-label" for="category">Subcategoría</label>
+                <div class="col-md-7 col-sm-8">
+                    <select class="form-control" id="category" name="category" required="required">
+                        <option value="">Seleccione una subcategoría</option>
+                        <t t-foreach="subcategories" t-as="subcat">
+                            <option
+                                    t-att-value="subcat.id"
+                                    t-att-data-parent="subcat.parent_id.id"
+                                    t-att-selected="subcat.id == category_id and 'selected' or None">
+                                <t t-esc="subcat.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+            </div>
+        </xpath>
 
-  </template>
-  <template id="portal_helpdesk_ticket_page_inherit" inherit_id="helpdesk_mgmt.portal_helpdesk_ticket_page" name="Add Expected Resolution Date">
-    <xpath expr="//div[@name='portal_ticket_col_0']" position="inside">
-        <div t-if="ticket.expected_resolution_date">
-            <strong>Fecha esperada de resolución:</strong>
-            <span t-field="ticket.expected_resolution_date" t-options='{"widget": "datetime"}'/>
-        </div>
-    </xpath>
-</template>
+    </template>
+    <template id="portal_helpdesk_ticket_page_inherit" inherit_id="helpdesk_mgmt.portal_helpdesk_ticket_page"
+              name="Add Expected Resolution Date">
+        <xpath expr="//div[@name='portal_ticket_col_0']" position="inside">
+            <div t-if="ticket.expected_resolution_date">
+                <strong>Fecha esperada de resolución:</strong>
+                <span t-field="ticket.expected_resolution_date" t-options='{"widget": "datetime"}'/>
+            </div>
+        </xpath>
+    </template>
 
 </odoo>
 
