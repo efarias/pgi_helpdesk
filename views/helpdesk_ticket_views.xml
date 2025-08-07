@@ -47,7 +47,7 @@
                         <field name="partner_email"/>
                         <field name="ticket_company_id"/>
                     </group>
-
+                    
                     <group string="Asignación y Clasificación" col="2">
                         <field name="team_id"/>
                         <field name="user_id"/>
