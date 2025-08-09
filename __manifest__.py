@@ -20,7 +20,8 @@ provenientes de usuarios del SLEP, con trazabilidad, historial, y categorizació
         'views/helpdesk_ticket_templates.xml',
         'views/assign_technician_wizard_view.xml',
         'views/helpdesk_ticket_stage_view.xml',
-        'views/helpdesk_ticket_menus.xml'
+        'views/helpdesk_ticket_menus.xml',
+        'views/portal_templates.xml',
     ],
     'assets': {
         'web.assets_frontend': [

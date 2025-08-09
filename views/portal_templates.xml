@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <!-- (A) Habilitar la sección de categorías de servicio -->
+  <template id="pgi_portal_enable_service_category"
+            inherit_id="portal.portal_my_home"
+            name="PGI: Enable service category"
+            priority="30">
+    <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+      <t t-set="portal_service_category_enable" t-value="True"/>
+    </xpath>
+  </template>
+
+  <!-- (B) Insertar la tarjeta 'Tíquets' con el snippet oficial -->
+  <template id="pgi_portal_service_category_tickets"
+            inherit_id="portal.portal_my_home"
+            name="PGI: Tickets tile in service category"
+            priority="30">
+    <xpath expr="//div[@id='portal_service_category']" position="inside">
+      <t t-call="portal.portal_docs_entry">
+        <t t-set="icon" t-value="'/pgi_helpdesk/static/src/img/ticket_icon.png'"/>
+        <t t-set="title">Tíquets</t>
+        <t t-set="url" t-value="'/my/tickets'"/>
+        <t t-set="text">Cree, revise y haga seguimiento de sus solicitudes de soporte</t>
+        <t t-set="placeholder_count" t-value="'ticket_count'"/>
+      </t>
+    </xpath>
+  </template>
+
+  <template id="pgi_portal_my_home_helpdesk_tile"
+            inherit_id="helpdesk_mgmt.portal_my_home"
+            name="PGI: Replace Tickets tile and remove home button">
+
+    <!-- Reemplazar la tarjeta original (t-call portal.portal_docs_entry) -->
+    <xpath expr="//div[hasclass('o_portal_docs')]/t[@t-call='portal.portal_docs_entry'][1]"
+           position="replace"/>
+
+    <!-- Eliminar el formulario con el botón "New Ticket" (match por t-attf-action) -->
+    <xpath expr="//div[hasclass('o_portal_docs')]//form[@t-attf-action='/new/ticket' or contains(@t-attf-action, '/new/ticket') or contains(@action, '/new/ticket')]"
+           position="replace"/>
+  </template>
+
+  <!-- Quitar el botón "New Ticket" en la lista de tickets del portal -->
+  <template id="pgi_portal_my_tickets_without_new_button"
+            inherit_id="helpdesk_mgmt.portal_my_tickets"
+            name="PGI: remove New Ticket button in portal list"
+            priority="100">
+    <!-- El formulario que agrega el botón usa t-attf-action="/new/ticket".
+         Lo eliminamos de forma robusta considerando variantes. -->
+    <xpath expr="//form[@t-attf-action='/new/ticket'
+                        or contains(@t-attf-action, '/new/ticket')
+                        or contains(@action, '/new/ticket')
+                        or .//button[@name='create_new_ticket']]"
+           position="replace"/>
+  </template>
+
+
+</odoo>
