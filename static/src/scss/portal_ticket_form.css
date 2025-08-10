@@ -1,0 +1,84 @@
+.pgi-ticket-grid .card { border-radius: 12px; }
+
+.pgi-dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  background: #f8fafc;
+}
+.pgi-dropzone--drag {
+  background: #eef2ff;
+  border-color: #94a3b8;
+}
+.pgi-dropzone .pgi-select-link { text-decoration: underline; }
+
+.pgi-files-preview li {
+  padding-left: 18px;
+  position: relative;
+  margin-bottom: 4px;
+}
+.pgi-files-preview li::before {
+  content: "•";
+  position: absolute;
+  left: 4px;
+}
+
+.form-text.text-muted { font-size: 0.875rem; }
+
+.pgi-rte {
+  min-height: 140px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 10px;
+  background: #fff;
+}
+.pgi-rte--empty:before {
+  content: attr(data-placeholder);
+  color: #6c757d;
+}
+.pgi-rte:focus {
+  outline: none;
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+}
+
+.pgi-rte-toolbar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.pgi-rte-toolbar button {
+  border: 1px solid #ced4da;
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.pgi-rte-toolbar button:focus { outline: none; }
+
+.pgi-rte--empty:before {
+  content: attr(data-placeholder);
+  color: #6c757d;
+}
+.pgi-rte:focus {
+  outline: none;
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+}
+.invalid-feedback { color: #dc3545; }
+
+.pgi-file-input-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  opacity: 0 !important; /* oculto pero presente en layout */
+}

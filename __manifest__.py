@@ -9,7 +9,7 @@ provenientes de usuarios del SLEP, con trazabilidad, historial, y categorizació
     'author': 'SLEP Chinchorro - Eduardo Farías',
     'website': 'https://slepchinchorro.cl',
     'category': 'Services/Helpdesk',
-    'depends': ['base', 'mail', 'contacts', 'helpdesk_mgmt', 'spreadsheet', 'spreadsheet_dashboard'],
+    'depends': ['base', 'mail', 'contacts', 'helpdesk_mgmt', 'portal', 'web_editor', 'spreadsheet', 'spreadsheet_dashboard'],
     'data': [
         'security/ir.model.access.csv',
         'data/dashboard_ticket_metrics.xml',
@@ -26,6 +26,7 @@ provenientes de usuarios del SLEP, con trazabilidad, historial, y categorizació
     'assets': {
         'web.assets_frontend': [
             'pgi_helpdesk/static/src/js/portal_ticket_filter.js',
+            'pgi_helpdesk/static/src/scss/portal_ticket_form.css',
         ],
     },
     'application': True,

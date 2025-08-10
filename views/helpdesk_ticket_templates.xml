@@ -1,78 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="portal_create_ticket" inherit_id="helpdesk_mgmt.portal_create_ticket" name="PGI Portal Create Ticket">
 
-        <!-- Cargar JS personalizado -->
-        <xpath expr="//form" position="after">
-            <script type="module" src="/pgi_helpdesk/static/src/js/portal_ticket_filter.js"/>
-        </xpath>
+  <!-- Reestiliza el formulario conservando acción, método, enctype y csrf -->
+  <template id="portal_create_ticket"
+            inherit_id="helpdesk_mgmt.portal_create_ticket"
+            name="PGI Portal Create Ticket UI/UX"
+            priority="50">
 
-        <!-- Reemplazo del selector de equipo -->
-        <xpath expr="//form/div[@class='form-group'][label[@for='team']]" position="replace">
-            <div class="form-group">
-                <label class="col-md-3 col-sm-4 control-label" for="team">Equipo</label>
+    <!-- Inyectar nuestro JS (filtrado + UX) y CSS -->
+    <xpath expr="//form" position="after">
+      <script type="module" src="/pgi_helpdesk/static/src/js/portal_ticket_filter.js"/>
+      <link rel="stylesheet" href="/pgi_helpdesk/static/src/scss/portal_ticket_form.css"/>
+    </xpath>
+
+    <!-- Título y descripción -->
+    <xpath expr="//h1" position="replace">
+      <h1 class="text-center">Enviar un nuevo ticket</h1>
+    </xpath>
+    <xpath expr="//h1" position="after">
+      <p class="text-muted mb-4 text-center">
+        Complete este formulario para reportar incidencias o solicitar soporte. Mientras más detalles entregue, más rápido podremos ayudarle.
+      </p>
+    </xpath>
+
+
+    <!-- REEMPLAZAMOS el <form> original POR otro <form> (con la misma acción/método/enctype y el csrf) -->
+    <xpath expr="//form" position="replace">
+      <form id="pgi-ticket-form" action="/pgi/submitted/ticket" method="POST" class="form-horizontal mt32" enctype="multipart/form-data">
+
+        <!-- CSRF obligatorio -->
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+        <div class="row g-3 pgi-ticket-grid">
+          <!-- Columna izquierda -->
+          <div class="col-12 col-lg-6">
+            <div class="card p-3 h-100">
+              <h3 class="h5 mb-3">Datos del ticket</h3>
+
+              <!-- Equipo -->
+              <div class="form-group mb-3" t-if="teams">
+                <label class="col-md-3 col-sm-4 control-label" for="team">Equipo <span class="text-danger">*</span></label>
                 <div class="col-md-7 col-sm-8">
-                    <select class="form-control" id="team" name="team" required="required">
-                        <option value="">Seleccione un equipo</option>
-                        <t t-foreach="teams" t-as="team">
-                            <option
-                                    t-att-value="team.id"
-                                    t-att-selected="team.id == selected_team and 'selected' or None">
-                                <t t-esc="team.name"/>
-                            </option>
-                        </t>
-                    </select>
+                  <select class="form-control" id="team" name="team" t-att-required="ticket_team_id_required">
+                    <option value=""/>
+                    <t t-foreach="teams" t-as="team">
+                      <option t-attf-value="#{team.id}" t-att-selected="team.id == selected_team and 'selected' or None">
+                        <t t-esc="team.name"/>
+                      </option>
+                    </t>
+                  </select>
+                  <small class="form-text text-muted">Dirija su solicitud al equipo correcto para acelerar la resolución.</small>
                 </div>
-            </div>
-        </xpath>
+              </div>
 
-        <!-- Reemplazo de categorías padre y subcategorías -->
-        <xpath expr="//form/div[@class='form-group'][label[@for='category']]" position="replace">
-            <!-- Categoría padre -->
-            <div class="form-group">
-                <label class="col-md-3 col-sm-4 control-label" for="category_parent">Categoría</label>
+              <!-- Categoría (padre visible) + Subcategoría (campo real 'category') -->
+              <div class="form-group mb-3">
+                <label class="col-md-3 col-sm-4 control-label" for="category_parent">Categoría <span class="text-danger">*</span></label>
                 <div class="col-md-7 col-sm-8">
-                    <select class="form-control" id="category_parent" name="category_parent" required="required">
-                        <option value="">Seleccione una categoría</option>
-                        <t t-foreach="categories" t-as="cat">
-                            <option
-                                    t-att-value="cat.id"
-                                    t-att-selected="cat.id == category_parent_id and 'selected' or None">
-                                <t t-esc="cat.name"/>
-                            </option>
-                        </t>
-                    </select>
+                  <select class="form-control" id="category_parent" name="category_parent" t-att-required="ticket_category_id_required">
+                    <option value=""/>
+                    <t t-foreach="categories" t-as="cat">
+                      <option t-attf-value="#{cat.id}" t-att-selected="cat.id == category_parent_id and 'selected' or None">
+                        <t t-esc="cat.name"/>
+                      </option>
+                    </t>
+                  </select>
+                  <small class="form-text text-muted">Primero elija la categoría general del problema.</small>
                 </div>
-            </div>
+              </div>
 
-            <!-- Subcategoría hija -->
-            <div class="form-group">
-                <label class="col-md-3 col-sm-4 control-label" for="category">Subcategoría</label>
+              <div class="form-group mb-3">
+                <label class="col-md-3 col-sm-4 control-label" for="category">Subcategoría <span class="text-danger">*</span></label>
                 <div class="col-md-7 col-sm-8">
-                    <select class="form-control" id="category" name="category" required="required">
-                        <option value="">Seleccione una subcategoría</option>
-                        <t t-foreach="subcategories" t-as="subcat">
-                            <option
-                                    t-att-value="subcat.id"
-                                    t-att-data-parent="subcat.parent_id.id"
-                                    t-att-selected="subcat.id == category_id and 'selected' or None">
-                                <t t-esc="subcat.name"/>
-                            </option>
-                        </t>
-                    </select>
+                  <select class="form-control" id="category" name="category" t-att-required="ticket_category_id_required">
+                    <option value=""/>
+                    <t t-foreach="subcategories" t-as="subcat">
+                      <option t-attf-value="#{subcat.id}" t-att-data-parent="subcat.parent_id.id" t-att-selected="subcat.id == category_id and 'selected' or None">
+                        <t t-esc="subcat.name"/>
+                      </option>
+                    </t>
+                  </select>
+                  <small class="form-text text-muted">Las opciones se filtran según la categoría.</small>
                 </div>
-            </div>
-        </xpath>
+              </div>
 
-    </template>
-    <template id="portal_helpdesk_ticket_page_inherit" inherit_id="helpdesk_mgmt.portal_helpdesk_ticket_page"
-              name="Add Expected Resolution Date">
-        <xpath expr="//div[@name='portal_ticket_col_0']" position="inside">
-            <div t-if="ticket.expected_resolution_date">
-                <strong>Fecha esperada de resolución:</strong>
-                <span t-field="ticket.expected_resolution_date" t-options='{"widget": "datetime"}'/>
+              <!-- Asunto -->
+              <div class="form-group mb-2">
+                <label class="col-md-3 col-sm-4 control-label" for="subject">Asunto <span class="text-danger">*</span></label>
+                <div class="col-md-7 col-sm-8">
+                  <input id="subject" name="subject" type="text" class="form-control" required="True"
+                         placeholder="Ej.: Teléfono sin tono en oficina Dirección"/>
+                  <small class="form-text text-muted">Resuma el problema en una frase.</small>
+                </div>
+              </div>
             </div>
-        </xpath>
-    </template>
+          </div>
+
+          <!-- Columna derecha -->
+          <div class="col-12 col-lg-6">
+            <div class="card p-3 h-100">
+              <h3 class="h5 mb-3">Detalles adicionales</h3>
+
+              <!-- Adjuntos (conserva el input original para compatibilidad con controlador) -->
+              <div class="form-group mb-3">
+                <label class="col-md-3 col-sm-4 control-label" for="attachment">Añadir adjuntos</label>
+                <div class="col-md-7 col-sm-8">
+                  <!-- Dropzone visual -->
+                  <div id="pgi-dropzone" class="pgi-dropzone" role="button" tabindex="0"
+                       aria-label="Arrastre y suelte archivos, o haga clic para seleccionar">
+                    <div class="pgi-dropzone-hint">
+                      Arrastre y suelte archivos, o <a href="#" class="pgi-select-link">seleccione archivos</a><br/>
+                      <small class="text-muted">Acepta JPG, PNG, PDF, DOCX (máx. 5 MB c/u)</small>
+                    </div>
+                    <ul id="pgi-files-preview" class="pgi-files-preview list-unstyled mt-2"></ul>
+                  </div>
+
+                  <!-- Input REAL (enviado al backend) -->
+                  <!-- Input REAL (enviado al backend) -->
+                  <div class="btn btn-default btn-file col-md-12" style="position:relative;">
+                    <input class="form-control o_website_form_input pgi-file-input-visually-hidden"
+                           name="attachment" id="attachment" type="file"
+                           multiple="multiple" t-att-max_upload_size="max_upload_size"
+                           accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"/>
+                  </div>
+
+                  <div id="attachment_information" style="display:none;" class="text-danger"/>
+                </div>
+              </div>
+
+              <!-- Descripción -->
+
+              <div class="form-group mb-4">
+                <label class="col-md-3 col-sm-4 control-label" for="description_html">
+                  Descripción <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-7 col-sm-8">
+                  <!-- Contenedor editable: lo inicializa web_editor -->
+
+                  <!-- Campo REAL que viaja: HTML -->
+                  <textarea name="description"
+                    class="o_wysiwyg_loader form-control"
+                    rows="6"
+                    placeholder="Describe tu requerimiento..."></textarea>
+
+
+                  <small class="form-text text-muted d-block mt-2">
+                    Puede usar negrita, cursiva, subrayado y listas. Adjunte imágenes como archivos.
+                  </small>
+                  <div id="description_error" class="invalid-feedback d-block" style="display:none;">
+                    Por favor, escriba una descripción.
+                  </div>
+                </div>
+              </div>
+
+
+
+              <!-- Botón -->
+              <div class="form-group">
+                <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                  <button id="pgi-submit" type="submit" class="btn btn-primary btn-lg">Enviar solicitud</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </xpath>
+  </template>
+
+  <template id="pgi_portal_ticket_description_html"
+            inherit_id="helpdesk_mgmt.portal_helpdesk_ticket_page"
+            name="PGI: render HTML in ticket description"
+            priority="80">
+
+    <!-- Caso 1: reemplazar el div exacto que mostraba la descripción -->
+    <xpath expr="//div[contains(@class,'py-1') and contains(@class,'bg-100')][@t-field='ticket.description']"
+           position="replace">
+      <div class="py-1 px-2 bg-100 small o-pgi-ticket-description">
+        <t t-raw="ticket.description or ''"/>
+      </div>
+    </xpath>
+
+    <!-- Caso 2 (fallback): tomar el primer div después del título 'Description' -->
+    <xpath expr="//div[@t-if='ticket.description']/div[@class='d-flex my-2']/following-sibling::div[1]"
+           position="replace">
+      <div class="py-1 px-2 bg-100 small o-pgi-ticket-description">
+        <t t-raw="ticket.description or ''"/>
+      </div>
+    </xpath>
+
+  </template>
 
 </odoo>
-
