@@ -16,7 +16,6 @@ provenientes de usuarios del SLEP, con trazabilidad, historial, y categorizació
         'views/close_ticket_wizard_view.xml',
         'views/helpdesk_ticket_category_views.xml',
         'views/helpdesk_ticket_views.xml',
-        'views/res_partner_view.xml',
         'views/helpdesk_ticket_templates.xml',
         'views/assign_technician_wizard_view.xml',
         'views/helpdesk_ticket_stage_view.xml',
