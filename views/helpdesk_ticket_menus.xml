@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
+    <record id="pgi_helpdesk_ticket_action" model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">kanban,list,form,pivot</field>
+    </record>
+
     <!-- Menú raíz -->
     <menuitem id="menu_pgi_root"
               name="PGI Soporte Técnico"
@@ -19,7 +26,7 @@
     <menuitem id="pgi_helpdesk_ticket_menu"
               name="Tickets"
               parent="menu_pgi_root"
-              action="helpdesk_mgmt.helpdesk_ticket_action"
+              action="pgi_helpdesk.pgi_helpdesk_ticket_action"
               sequence="5"/>
 
     <menuitem id="pgi_helpdesk_reporting_menu"
