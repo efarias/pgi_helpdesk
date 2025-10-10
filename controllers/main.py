@@ -1,10 +1,12 @@
 import base64
 import logging
+from html import unescape
 
 import werkzeug
 from odoo import http
 from odoo.addons.helpdesk_mgmt.controllers.main import HelpdeskTicketController as BaseController
 from odoo.http import request
+from odoo.tools import html_sanitize
 
 _logger = logging.getLogger(__name__)
 
@@ -18,7 +20,6 @@ class PGIHelpdeskTicketController(BaseController):
 
     @http.route("/new/ticket", type="http", auth="user", website=True)
     def create_new_ticket(self, **kw):
-        # (sin cambios relevantes) -> render del formulario con categorías padre y subcategorías
         _logger.info(">> [PGI] Entrando a controlador personalizado /new/ticket")
         team_id = int(kw.get("team") or 0)
         category_parent_id = int(kw.get("category_parent") or 0)
@@ -64,56 +65,74 @@ class PGIHelpdeskTicketController(BaseController):
             "max_upload_size": session_info["max_file_upload_size"],
         })
 
-    # --- NUEVO: preparamos los valores a crear tomando categoría y subcategoría ---
     def _prepare_submit_ticket_vals_pgi(self, **kw):
         """
-        Igual que el _prepare_submit_ticket_vals de OCA pero:
-        - Lee 'category_parent' (padre) y 'category' (subcat).
-        - Valida consistencia entre ambos.
-        - Setea category_id = subcategoría.
-        - Si el ticket tiene el campo category_parent_id, también lo setea.
-        - Acepta HTML del portal para 'description' (WYSIWYG).
+        Prepara valores para crear ticket con:
+        - Validación de categoría y subcategoría
+        - Consistencia entre padre e hijo
+        - Sanitización de HTML en descripción
+        - Seteo de company_id desde categoría
         """
-        # Subcategoría (obligatoria por el form)
-        subcat = request.env["helpdesk.ticket.category"].browse(int(kw.get("category") or 0)).sudo()
+        # Subcategoría (obligatoria)
+        subcat = request.env["helpdesk.ticket.category"].browse(
+            int(kw.get("category") or 0)
+        ).sudo()
+
         if not subcat or not subcat.exists():
-            raise http.ValidationError("Debe seleccionar una subcategoría válida.")
+            raise werkzeug.exceptions.BadRequest(
+                "Debe seleccionar una subcategoría válida."
+            )
 
         # Padre seleccionado por el usuario
-        parent_from_kw = request.env["helpdesk.ticket.category"].browse(int(kw.get("category_parent") or 0)).sudo()
-        # Si no llegó padre, usamos el padre real de la subcategoría
-        parent_final = parent_from_kw if parent_from_kw and parent_from_kw.exists() else subcat.parent_id
+        parent_from_kw = request.env["helpdesk.ticket.category"].browse(
+            int(kw.get("category_parent") or 0)
+        ).sudo()
 
-        # Validación de consistencia: si el usuario eligió un padre distinto al real, corregimos al real
+        # Si no llegó padre, usamos el padre real de la subcategoría
+        parent_final = (
+            parent_from_kw
+            if parent_from_kw and parent_from_kw.exists()
+            else subcat.parent_id
+        )
+
+        # Validación de consistencia
         if parent_from_kw and parent_from_kw != subcat.parent_id:
             _logger.warning(
-                ">> [PGI] Mismatch padre-subcategoría: padre elegido (%s) != padre real (%s). Se tomará el padre real.",
-                parent_from_kw.id, subcat.parent_id.id if subcat.parent_id else None
+                ">> [PGI] Mismatch padre-subcategoría: padre elegido (%s) != padre real (%s). "
+                "Se tomará el padre real.",
+                parent_from_kw.id,
+                subcat.parent_id.id if subcat.parent_id else None
             )
             parent_final = subcat.parent_id
 
         # Base: aprovechamos la lógica de equipos y stage del BaseController
         vals = super(PGIHelpdeskTicketController, self)._prepare_submit_ticket_vals(**kw)
 
-        # Forzamos la empresa desde la categoría (si tiene) o desde el entorno
+        # Sanitizar HTML de la descripción
+        raw_html = unescape(kw.get("description") or "")
+        safe_html = html_sanitize(
+            raw_html,
+            sanitize_attributes=True,
+            sanitize_style=True
+        )
+
+        # Actualizar valores
         company = (subcat.company_id or request.env.company).sudo()
         vals.update({
             "company_id": company.id,
-            "category_id": subcat.id,  # subcategoría
-            # ACEPTAMOS HTML DEL PORTAL (WYSIWYG). Si quieres forzar texto plano, usa plaintext2html.
-            "description": kw.get("description") or "",
+            "category_id": subcat.id,
+            "description": safe_html,  # ✅ HTML sanitizado
             "name": kw.get("subject"),
             "attachment_ids": False,
         })
 
-        # Si el modelo tiene 'category_parent_id', lo seteamos.
+        # Si el modelo tiene 'category_parent_id', lo seteamos
         ticket_model = request.env["helpdesk.ticket"]
         if "category_parent_id" in ticket_model._fields and parent_final:
             vals["category_parent_id"] = parent_final.id
 
         return vals
 
-    # --- NUEVO: ruta de envío que calza con tu <form action="/pgi/submitted/ticket"> ---
     @http.route("/pgi/submitted/ticket", type="http", auth="user", website=True, csrf=True)
     def submit_ticket_pgi(self, **kw):
         """
@@ -124,7 +143,7 @@ class PGIHelpdeskTicketController(BaseController):
         ticket = request.env["helpdesk.ticket"].sudo().create(vals)
         ticket.message_subscribe(partner_ids=request.env.user.partner_id.ids)
 
-        # Adjuntos (igual que OCA)
+        # Adjuntos
         if kw.get("attachment"):
             for c_file in request.httprequest.files.getlist("attachment"):
                 data = c_file.read()
